@@ -14,31 +14,81 @@ const Template: ComponentStory<typeof TreeView> = (args) => <TreeView {...args} 
 
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Primary.args = {
-  showTreeView: true,
-    menuData: [
+Primary.args = [
+  {
+    cod: 1,
+    description: 'Tall Things',
+    checked: false,
+    submenu: [
       {
-        menuDescription: 'Teste',
-        menuFunction: () => {},
+        cod: 1,
+        description: 'Buildings',
+        checked: false,
+        submenu: [],
+      },
+      {
+        cod: 2,
+        description: 'Giants',
+        checked: false,
+        submenu: [
+          {
+            cod: 1,
+            description: 'Andre',
+            checked: false,
+          },
+          {
+            cod: 2,
+            description: 'Paul Bunyan',
+            checked: false,
+          }
+        ],
+      },
+      {
+        cod: 3,
+        description: 'Two sandwiches',
+        checked: false,
+        submenu: [],
       }
     ],
-    anchorPoint: {
-        xClickPosition: 0,
-        yClickPosition: 0,
-    }
-};
+  },
+  {
+    cod: 2,
+    description: 'Short Things',
+    checked: false,
+    submenu: [
+      {
+        cod: 4,
+        description: 'Smurfs',
+        checked: false,
+        submenu: [],
+      },
+      {
+        cod: 5,
+        description: 'Mushrooms',
+        checked: false,
+        submenu: [],
+      },
+      {
+        cod: 6,
+        description: 'One Sandwich',
+        checked: false,
+        submenu: [],
+      }
+    ],
+  }
+];
 
 export const Secondary = Template.bind({});
 Secondary.args = {
   showTreeView: true,
-    menuData: [
-      {
-        menuDescription: 'Teste 2',
-        menuFunction: () => {},
-      }
-    ],
-    anchorPoint: {
-        xClickPosition: 0,
-        yClickPosition: 0,
+  menuData: [
+    {
+      menuDescription: 'Teste 2',
+      menuFunction: () => { },
     }
+  ],
+  anchorPoint: {
+    xClickPosition: 0,
+    yClickPosition: 0,
+  }
 };
