@@ -60,7 +60,6 @@ Primary.args = [
         cod: 4,
         description: 'Smurfs',
         checked: false,
-        submenu: [],
       },
       {
         cod: 5,

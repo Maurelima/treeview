@@ -27,8 +27,11 @@ interface ArrayData {
     submenu?: ArrayData[];
 }
 
-interface ArrayDataFormated extends ArrayData {
+type ExtendedArraData = Omit<ArrayData, 'submenu'>
+
+interface ArrayDataFormated extends ExtendedArraData {
     index: number;
+    submenu?: ArrayDataFormated[];
 }
 
 const TreeView: React.FC<ArrayData> = (props) => {
@@ -65,33 +68,83 @@ const TreeView: React.FC<ArrayData> = (props) => {
         setMenus(teste)
     }, [props])
 
-    useEffect(() => {
-        console.log(menus)
-    }, [menus])
+    // useEffect(() => {
+    //     console.log(menus)
+    // }, [menus])
 
-    const testeRef = useCallback((index: number) => {
-        console.log('ref')
-    }, []);
+    function filterData(obj: ArrayDataFormated[], index: number) {
+    }
+
+    function hasClass(elem: Element, className: string) {
+        return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+    }
+
+    function showChildrenChecks(elm: Element) {
+        let pN = elm.parentNode;
+        let childCheks = pN?.children;
+        if (childCheks) {
+            for (var i = 0; i < childCheks.length; i++) {
+                if (hasClass(childCheks[i], 'child-check')) {
+                    childCheks[i].classList.add("active");
+                }
+            }
+        }
+
+    }
+
+    function hideChildrenChecks(elm: Element) {
+        var pN = elm.parentNode;
+        var childCheks = pN?.children;
+        if (childCheks) {
+            for (var i = 0; i < childCheks.length; i++) {
+                if (hasClass(childCheks[i], 'child-check')) {
+                    childCheks[i].classList.remove("active");
+                }
+            }
+        }
+
+
+    }
 
     const setChecked = useCallback((index: number) => {
-        console.log('ref')
-    }, []);
+        if (refs.current[index].checked) {
+            showChildrenChecks(refs.current[index])
+        } else {
+            hideChildrenChecks(refs.current[index])
+        }
+        // let checks = document.querySelectorAll("input[type=checkbox]");
+        // showChildrenChecks()
+        // for (let i = 0; i < checks.length; i++) {
+        //     checks[i].addEventListener('change', () => {
+        //         if (this.checked) {
+        //             showChildrenChecks(refs.current[i])
+        //         }
+        //     })
+        // }
+    }, [menus]);
+
 
     function testeFunction(data: ArrayDataFormated, index: number) {
-        const indexa = Number(nanoid())
         return (
             <li>
-                <input type="checkbox" name={`chk-${nanoid()}`} id={`chk-${nanoid()}`} ref={(element) => { if (element) refs.current[indexa] = element }} onClick={() => testeRef(index)} />
-                <label htmlFor={`chk-${nanoid()}`} className="custom-unchecked">{data.description}</label>
+                <input
+                    type="checkbox"
+                    name={`chk-${data.index}`}
+                    id={`chk-${data.index}`}
+                    ref={(element) => { if (element) refs.current[data.index] = element }}
+                    onClick={() => setChecked(data.index)}
+                />
+                <label htmlFor={`chk-${data.index}`} className="custom-unchecked">{data.description}</label>
 
                 {data.submenu && data.submenu.length > 0 && (
-                    <ul>
-                        {data.submenu.map((submenu: any, index: number) => {
-                            return (
-                                testeFunction(submenu, index)
-                            )
-                        })}
-                    </ul>
+
+                    data.submenu.map((submenu: any, index: number) => {
+                        return (
+                            <ul className="child-check">
+                                {testeFunction(submenu, index)}
+                            </ul>
+                        )
+                    })
                 )}
             </li>
         )
